@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  verdaccio:
+    container_name: lg-infra-verdaccio
+    image: verdaccio/verdaccio:5
+    restart: unless-stopped
+    ports:
+      - "${VERDACCIO_PORT:-4873}:4873"
+    volumes:
+      - ./config.yaml:/verdaccio/conf/config.yaml:ro
+      - ./htpasswd:/verdaccio/conf/htpasswd
+      - verdaccio_storage:/verdaccio/storage
+    networks:
+      - lg-internal
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:4873/-/ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  lg-internal:
+    external: true
+
+volumes:
+  verdaccio_storage:
+    driver: local
