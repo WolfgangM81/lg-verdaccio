@@ -14,7 +14,9 @@ services:
     networks:
       - lg-internal
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:4873/-/ping"]
+      # localhost resolves IPv6-first on Alpine; Verdaccio listens IPv4 only.
+      # Use 127.0.0.1 explicitly to avoid ECONNREFUSED on ::1.
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:4873/-/ping"]
       interval: 10s
       timeout: 5s
       retries: 5
