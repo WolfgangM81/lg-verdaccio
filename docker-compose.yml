@@ -20,6 +20,11 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    labels:
+      homepage.group: "lg — Infra"
+      homepage.name: "lg Verdaccio"
+      homepage.icon: "mdi-package-variant"
+      homepage.description: "Private npm registry — port 4783 (side-by-side) / 4873 (default)"
 
 networks:
   lg-internal:
